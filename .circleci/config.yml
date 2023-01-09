@@ -153,9 +153,6 @@ workflows:
     - aws-ecr/build-and-push-image:
         repo: demo-prod
         tag: latest
-        path: .
-        registry-id: "653524450879"
-        region: "AWS_REGION"
         requires:
           - approve-apply
     
