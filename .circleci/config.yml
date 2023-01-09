@@ -1,26 +1,125 @@
-version: 2.1
-
+---
+version: '2.1'
 orbs:
-  aws-ecr: circleci/aws-ecr@8.2.1 # Use the AWS ECR orb in your configuration
-  aws-ecs: circleci/aws-ecs@3.2.0 # Use the AWS ECS orb in your configuration
+  terraform: circleci/terraform@3.2.0 #123
+  # tfsec: mycodeself/tfsec@1.1.0
+jobs:
+  # scan-example:
+  #   parameters:
+  #   executor: tfsec/default
+  #   steps:
+  #     - checkout
+  #     - tfsec/scan: 
+  #         directory: ./infrastructure
+  #         exclude-checks: 'aws-ec2-require-vpc-flow-logs-for-all-vpcs,aws-ec2-enable-at-rest-encryption,aws-ec2-enforce-http-token-imds,aws-ec2-no-public-egress-sgr,aws-ec2-no-public-ingress-sgr'
+
+
+  terraform-init:
+    executor: terraform/default
+    steps:
+      - checkout
+      - run : pwd
+      - terraform/init:
+          path: ./infrastructure
+
+          
+
+
+  terraform-validate:
+    executor: terraform/default
+    steps:
+      - checkout
+      - terraform/validate:
+          path: ./infrastructure
+
+
+  terraform-plan:
+    executor: terraform/default
+    steps:
+      - checkout
+      - terraform/plan:
+          path: ./infrastructure
+
+
+  terraform-apply:
+    executor: terraform/default
+    steps:
+      - checkout
+      - terraform/apply:
+          path: ./infrastructure
+
+
+
+
+
+
 
 workflows:
-  build-and-deploy:
+  deploy_infrastructure:
     jobs:
-      - aws-ecr/build-and-push-image:
-          dockerfile: Dockerfile
-          path: .
-          aws-access-key-id: AWS_ACCESS_KEY_ID
-          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
-          registry-id: registry_id
-          repo: $demo-cluster-prod
-          region: region
-          # tag: '${CIRCLE_SHA1}'
-      - aws-ecs/deploy-service-update:
-          requires:
-            - aws-ecr/build-and-push-image # only run the deployment job once the build and push image job has completed
-          family: '$demo-cluster-prod-service'
-          cluster: '$demo-cluster-prod-cluster'
-          # container-image-name-updates: 'container=${MY_APP_PREFIX}-service,tag=${CIRCLE_SHA1}'
+
+    # - scan-example
+
+
+    - terraform-init:
+        context: 
+          - terraform
+        # requires:
+        # - scan-example
+      
+
+
+    - terraform-validate:
+        context: 
+          - terraform
+        requires:
+        - terraform-init
+
+
+    - terraform-plan:
+        context: 
+          - terraform
+        requires:
+        - terraform-validate
+
+
+    - approve-plan:
+        type: approval
+        requires:
+        - terraform-plan
+
+
+    - terraform-apply:
+        context: 
+          - terraform
+        requires:
+        # - terraform-plan
+        - approve-plan
+
+
+
+    - approve-apply:
+        type: approval
+        requires:
+        # - approve-plan
+        - terraform-apply
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # VS Code Extension Version: 1.5.1
