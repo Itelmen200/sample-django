@@ -277,7 +277,8 @@ resource "aws_ecs_service" "main" {
  launch_type                        = "FARGATE"
  scheduling_strategy                = "REPLICA"
  depends_on = [
-   aws_lb_target_group.main
+   aws_lb_target_group.main,
+   aws_lb.main
  ]
  
  network_configuration {
