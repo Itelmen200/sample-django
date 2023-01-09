@@ -3,6 +3,7 @@ version: '2.1'
 orbs:
   terraform: circleci/terraform@3.2.0 
   aws-ecr: circleci/aws-ecr@8.2.1
+  aws-ecs: circleci/aws-ecs@3.2.0
   # tfsec: mycodeself/tfsec@1.1.0
 jobs:
   # scan-example:
@@ -155,6 +156,14 @@ workflows:
         tag: latest
         requires:
           - approve-apply
+    
+    - aws-ecs/deploy-service-update:
+          cluster: 'demo-cluster-prod'
+          container-image-name-updates: 'container=demo-prod,tag=latest'
+          family: 'service'
+          requires:
+            - aws-ecr/build-and-push-image
+
     
     - terraform-destroy:
         type: approval
