@@ -1,7 +1,7 @@
 ---
 version: '2.1'
 orbs:
-  terraform: circleci/terraform@3.2.0 #123
+  terraform: circleci/terraform@3.2.0 
   # tfsec: mycodeself/tfsec@1.1.0
 jobs:
   # scan-example:
@@ -48,11 +48,27 @@ jobs:
       - terraform/apply:
           path: ./infrastructure
 
+  terraform-destroy:
+    executor: terraform/default
+    steps:
+      - checkout
+      - run: 
+          path: /root/project/infrastructure
+          command: terraform init 
+      - run: 
+          path: /root/project/infrastructure
+          command: terraform destroy -auto-approve
+
+
   docker:
     docker:
       - image: docker:latest
     steps:
       - checkout
+
+      - run: apt update 
+
+      - run: apt install curl
 
       - run: curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 
@@ -127,6 +143,11 @@ workflows:
     - docker:
         requires:
          - approve-apply
+    
+    - terraform-destroy:
+        type: approval
+        requires:
+         - docker
 
 
 
