@@ -160,7 +160,7 @@ workflows:
     - terraform-destroy:
         type: approval
         requires:
-         - docker
+         - aws-ecr/build-and-push-image
 
 
 
