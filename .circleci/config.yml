@@ -66,15 +66,9 @@ jobs:
     steps:
       - checkout
 
-      - run: apt update 
+      - run: apk update 
 
-      - run: apt install curl
-
-      - run: curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-
-      - run: unzip awscliv2.zip
-
-      - run: sudo ./aws/install
+      - run: apk add aws-cli
 
       - run: aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin 653524450879.dkr.ecr.eu-central-1.amazonaws.com
 
