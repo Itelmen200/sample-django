@@ -7,6 +7,5 @@ ENV DEBUG="False"
 # ARG DATABASE_URL="postgresql://<PRIVATE_IP>/<DATABASE>?user=<USER>"
 COPY . .
 RUN pip install -r requirements.txt --no-cache-dir
-RUN python manage.py migrate
-CMD python manage.py runserver 0.0.0.0:8000
+CMD python manage.py migrate && python manage.py runserver 0.0.0.0:8000
 EXPOSE 8000
