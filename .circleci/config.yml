@@ -2,7 +2,7 @@ version: 2.1
 
 orbs:
   aws-ecr: circleci/aws-ecr@8.2.1 # Use the AWS ECR orb in your configuration
-  aws-ecs: circleci/aws-ecs@8.2.1 # Use the AWS ECS orb in your configuration
+  aws-ecs: circleci/aws-ecs@3.2.0 # Use the AWS ECS orb in your configuration
 
 workflows:
   build-and-deploy:
