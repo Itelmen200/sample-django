@@ -154,7 +154,7 @@ workflows:
         repo: demo-prod
         tag: latest
         path: .
-        registry-id: 653524450879
+        registry-id: "653524450879"
         region: eu-central-1
         requires:
           - approve-apply
