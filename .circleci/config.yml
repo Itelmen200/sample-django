@@ -48,7 +48,27 @@ jobs:
       - terraform/apply:
           path: ./infrastructure
 
+  docker:
+    docker:
+      - image: docker:latest
+    steps:
+      - checkout
 
+      - run: curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+
+      - run: unzip awscliv2.zip
+
+      - run: sudo ./aws/install
+
+      - run: aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin 653524450879.dkr.ecr.eu-central-1.amazonaws.com
+
+      - run: docker build -t demo-prod .
+
+      - run: docker tag demo-prod:latest 653524450879.dkr.ecr.eu-central-1.amazonaws.com/demo-prod:latest
+
+      - run: docker push 653524450879.dkr.ecr.eu-central-1.amazonaws.com/demo-prod:latest
+
+  
 
 
 
@@ -103,6 +123,10 @@ workflows:
         requires:
         # - approve-plan
         - terraform-apply
+
+    - docker:
+        requires:
+         - approve-apply
 
 
 
