@@ -2,6 +2,7 @@
 version: '2.1'
 orbs:
   terraform: circleci/terraform@3.2.0 
+  aws-ecr: circleci/aws-ecr@8.2.1
   # tfsec: mycodeself/tfsec@1.1.0
 jobs:
   # scan-example:
@@ -60,34 +61,35 @@ jobs:
           command: terraform destroy -auto-approve
 
 
-  docker:
-    docker:
-      - image: ubuntu:22.04
-    steps:
-      - checkout
+  # docker:
+  #   docker:
+  #     - image: ubuntu:22.04
+  #   steps:
+  #     - checkout
 
-      - run: apt update 
+  #     - run: apt update 
 
-      - run: apt install curl unzip -y
+  #     - run: apt install curl unzip -y
 
-      - run: curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+  #     - run: curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 
-      - run: unzip awscliv2.zip
+  #     - run: unzip awscliv2.zip
 
-      - run:  ./aws/install
+  #     - run: ./aws/install
 
-      - run: curl -fsSL https://get.docker.com -o get-docker.sh
+  #     - run: curl -fsSL https://get.docker.com -o get-docker.sh
 
-      - run: sh get-docker.sh
+  #     - run: sh get-docker.sh
 
-      - run: aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin 653524450879.dkr.ecr.eu-central-1.amazonaws.com
+  #     - run: aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin 653524450879.dkr.ecr.eu-central-1.amazonaws.com
 
-      - run: docker build -t demo-prod .
+  #     - run: docker build -t demo-prod .
 
-      - run: docker tag demo-prod:latest 653524450879.dkr.ecr.eu-central-1.amazonaws.com/demo-prod:latest
+  #     - run: docker tag demo-prod:latest 653524450879.dkr.ecr.eu-central-1.amazonaws.com/demo-prod:latest
 
-      - run: docker push 653524450879.dkr.ecr.eu-central-1.amazonaws.com/demo-prod:latest
+  #     - run: docker push 653524450879.dkr.ecr.eu-central-1.amazonaws.com/demo-prod:latest
 
+  
   
 
 
@@ -144,9 +146,16 @@ workflows:
         # - approve-plan
         - terraform-apply
 
-    - docker:
+    # - docker:
+    #     requires:
+    #      - approve-apply
+    
+    - aws-ecr/build-and-push-image:
+        repo: 653524450879.dkr.ecr.eu-central-1.amazonaws.com/demo-prod
+        tag: latest
+        path: .
         requires:
-         - approve-apply
+          - approve-apply
     
     - terraform-destroy:
         type: approval
