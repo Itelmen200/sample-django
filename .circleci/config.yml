@@ -165,7 +165,7 @@ workflows:
     
     - terraform-destroy:
         requires:
-         - aws-ecs/deploy-service-update
+         - approve-destroy
 
 
 
