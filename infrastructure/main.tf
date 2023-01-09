@@ -37,6 +37,7 @@ resource "aws_subnet" "public" {
 resource "aws_db_instance" "default" {
   allocated_storage    = 10
   engine               = "postgres"
+  final_snapshot_identifier = "final-snapshot-${md5(timestamp())}"
   engine_version       = "13.7"
   instance_class       = "db.t3.micro"
   username             = "postgres"

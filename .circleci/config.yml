@@ -164,13 +164,10 @@ workflows:
           family: 'service'
           requires:
             - aws-ecr/build-and-push-image
-
     
     - terraform-destroy:
-        type: approval
         requires:
          - aws-ecs/deploy-service-update
-
 
 
 
