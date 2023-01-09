@@ -107,8 +107,7 @@ workflows:
     - terraform-init:
         context: 
           - terraform
-        # requires:
-        # - scan-example
+
       
 
 
@@ -136,7 +135,6 @@ workflows:
         context: 
           - terraform
         requires:
-        # - terraform-plan
         - approve-plan
 
 
@@ -144,12 +142,7 @@ workflows:
     - approve-apply:
         type: approval
         requires:
-        # - approve-plan
         - terraform-apply
-
-    # - docker:
-    #     requires:
-    #      - approve-apply
     
     - aws-ecr/build-and-push-image:
         repo: demo-prod
@@ -164,6 +157,11 @@ workflows:
           family: 'service'
           requires:
             - aws-ecr/build-and-push-image
+
+    - approve-destroy:
+        type: approval
+        requires:
+        - aws-ecs/deploy-service-update
     
     - terraform-destroy:
         requires:
