@@ -6,5 +6,4 @@ ENV DATABASE_URL="postgres://postgres:postgres@terraform-20230109194437418600000
 ENV DEBUG="False"
 COPY . .
 RUN pip install -r requirements.txt --no-cache-dir
-CMD python manage.py migrate && python manage.py runserver 0.0.0.0:8000
-EXPOSE 8000
+CMD python manage.py migrate && python manage.py runserver 0.0.0.0:80

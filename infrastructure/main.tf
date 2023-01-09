@@ -199,8 +199,8 @@ resource "aws_ecs_task_definition" "main" {
 #    environment = var.container_environment
    portMappings = [{
      protocol      = "tcp"
-     containerPort = 8000
-     hostPort      = 8000
+     containerPort = 80
+     hostPort      = 80
    }]
   }])
 }
