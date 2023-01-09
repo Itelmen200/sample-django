@@ -3,6 +3,14 @@ provider "aws" {
   version    = "~> 2.0"
 }
 
+terraform {
+  backend "s3" {
+    bucket = "ter-buck"
+    key    = "terprod2/terraform.tfstate"
+    region = "eu-central-1"
+  }
+}
+
 resource "aws_vpc" "main" {
   cidr_block = var.cidr
 }
