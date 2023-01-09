@@ -155,7 +155,7 @@ workflows:
         tag: latest
         path: .
         registry-id: "653524450879"
-        region: eu-central-1
+        region: "AWS_REGION"
         requires:
           - approve-apply
     
