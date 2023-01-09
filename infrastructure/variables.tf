@@ -69,10 +69,6 @@ variable "health_check_path" {
 #   description = "The ARN of the certificate that the ALB uses for https"
 # }
 
-variable "container_image" {
-  description = "Http path for task health check"
-  default     = "nginx"
-}
 
 variable "container_environment" {
   description = "Http path for task health check"
