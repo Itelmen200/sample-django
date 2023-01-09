@@ -10,7 +10,8 @@ workflows:
       - aws-ecr/build-and-push-image:
           dockerfile: Dockerfile
           path: .
-          profile-name: default
+          aws-access-key-id: $AWS_ACCESS_KEY_ID
+          aws-secret-access-key: $AWS_SECRET_ACCESS_KEY
           repo: $demo-cluster-prod
           # tag: '${CIRCLE_SHA1}'
       - aws-ecs/deploy-service-update:
