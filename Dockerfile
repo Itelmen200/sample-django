@@ -1,7 +1,7 @@
 FROM python:3.9-buster
 
 WORKDIR /app
-ENV DJANGO_ALLOWED_HOSTS=demo-alb-prod-2119233415.eu-central-1.elb.amazonaws.com,localhost
+ENV DJANGO_ALLOWED_HOSTS=demo-alb-prod-685283120.eu-central-1.elb.amazonaws.com,localhost
 ENV DATABASE_URL="postgres://postgres:postgres@terraform-20230109213709820000000001.c1stjbzmb3ve.eu-central-1.rds.amazonaws.com:5432/postgres"
 ENV DEBUG="False"
 COPY . .
