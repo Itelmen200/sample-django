@@ -62,7 +62,7 @@ jobs:
 
   docker:
     docker:
-      - image: docker:latest
+      - image: docker:dind
     steps:
       - checkout
 
