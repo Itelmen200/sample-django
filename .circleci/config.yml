@@ -159,7 +159,8 @@ workflows:
     
     - aws-ecs/deploy-service-update:
           cluster: 'demo-cluster-prod'
-          container-image-name-updates: 'container=demo-service-prod,tag=latest'
+          force-new-deployment: true
+          service-name: 'demo-service-prod'
           family: 'service'
           requires:
             - aws-ecr/build-and-push-image
