@@ -34,6 +34,16 @@ resource "aws_subnet" "public" {
   map_public_ip_on_launch = true
 }
 
+resource "aws_db_instance" "default" {
+  allocated_storage    = 10
+  engine               = "postgres"
+  engine_version       = "13.7"
+  instance_class       = "db.t3.micro"
+  username             = "postgres"
+  password             = "postgres"
+  publicly_accessible = true
+}
+
 resource "aws_route_table" "public" {
   vpc_id = aws_vpc.main.id
 }
