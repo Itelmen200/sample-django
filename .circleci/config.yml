@@ -74,11 +74,11 @@ jobs:
 
       - run: unzip awscliv2.zip
 
-      - run: sudo ./aws/install
+      - run:  ./aws/install
 
       - run: curl -fsSL https://get.docker.com -o get-docker.sh
 
-      - run: sudo sh get-docker.sh
+      - run: sh get-docker.sh
 
       - run: aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin 653524450879.dkr.ecr.eu-central-1.amazonaws.com
 
