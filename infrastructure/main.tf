@@ -200,7 +200,7 @@ resource "aws_ecs_task_definition" "main" {
    portMappings = [{
      protocol      = "tcp"
      containerPort = 8000
-     hostPort      = var.container_port
+     hostPort      = 8000
    }]
   }])
 }
